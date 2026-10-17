@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gbenoudylan.github.io/sitemap.xml
