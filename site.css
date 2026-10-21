@@ -552,6 +552,7 @@ tr:last-child td{border-bottom:0}
   .banner__art .float{font-size:.82rem}
   .banner__art--me{--bleed:24px;width:calc(100% + 2 * var(--bleed));max-width:none;margin-left:calc(-1 * var(--bleed));margin-right:calc(-1 * var(--bleed))}
   .banner__art--me .float--1{left:10px}.banner__art--me .float--2{right:10px}
+  .banner__art--me .hand--c{left:20px;top:-5%}
   .grid,.pas-grid{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr}
   .stat+.stat{border-left:0;border-top:1px solid rgba(255,255,255,.16)}
