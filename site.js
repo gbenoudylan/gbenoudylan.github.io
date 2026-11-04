@@ -5,6 +5,7 @@
   'use strict';
   var doc=document, root=doc.documentElement;
   var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var EN=root.lang==='en';
   function $(s,c){return (c||doc).querySelector(s)}
   function $$(s,c){return Array.prototype.slice.call((c||doc).querySelectorAll(s))}
 
@@ -35,7 +36,7 @@
       nav.classList.toggle('open',open);
       btn.setAttribute('aria-expanded',open?'true':'false');
       doc.body.classList.toggle('menu-open',open);
-      if(label) label.textContent=open?'Fermer':'Menu';
+      if(label) label.textContent=open?(EN?'Close':'Fermer'):'Menu';
     }
     btn.addEventListener('click',function(){ setMenu(!nav.classList.contains('open')); });
     doc.addEventListener('keydown',function(e){
@@ -103,10 +104,10 @@
       function fallback(){
         var code=b.parentNode && $('code',b.parentNode);
         if(code && window.getSelection){ var r=doc.createRange(); r.selectNodeContents(code); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); }
-        done('Sélectionnée');
+        done(EN?'Selected':'Sélectionnée');
       }
       try{
-        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ done('Adresse copiée'); },fallback); }
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ done(EN?'Address copied':'Adresse copiée'); },fallback); }
         else fallback();
       }catch(e){ fallback(); }
     });

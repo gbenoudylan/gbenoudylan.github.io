@@ -1023,3 +1023,15 @@ a.ref:hover{background:var(--yellow)}
 .table-wrap{max-width:100%}
 .lost h1{overflow-wrap:anywhere}
 .lost h1{font-size:clamp(2.1rem,10vw,5rem)}
+/* Sélecteur de langue */
+.nav .nav__lang{margin-left:6px;padding:8px 10px;border:1.5px solid var(--line-2);border-radius:var(--r-s);font-size:.82rem;font-weight:800;letter-spacing:.06em}
+.nav .nav__lang i{display:none}
+.nav .nav__lang .nav__lang-t{display:none}
+.nav .nav__lang::before{content:attr(hreflang);text-transform:uppercase}
+.nav .nav__lang:hover{border-color:var(--night)}
+@media (max-width:960px){
+  .nav .nav__lang{margin:20px 0 0;border:1px solid var(--line-dark);font-size:1rem;font-family:var(--body);padding:14px 16px;justify-content:space-between}
+  .nav .nav__lang::before{content:none}
+  .nav .nav__lang i{display:inline;width:auto}
+  .nav .nav__lang .nav__lang-t{display:inline}
+}

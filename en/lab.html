@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab | Dylan Gbenou</title>
+<meta name="description" content="Dylan Gbenou&#x27;s lab: an interactive IAM access review demo on fictional data, a network failure simulator and what he is learning next.">
+<link rel="canonical" href="https://gbenoudylan.github.io/en/lab.html"><link rel="alternate" hreflang="fr" href="https://gbenoudylan.github.io/labo.html"><link rel="alternate" hreflang="en" href="https://gbenoudylan.github.io/en/lab.html"><link rel="alternate" hreflang="x-default" href="https://gbenoudylan.github.io/labo.html">
+<meta name="theme-color" content="#F6F8F6">
+<meta name="author" content="Dylan Maxence Gbenou">
+<link rel="icon" type="image/webp" href="../assets/avatar.webp"><link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Dylan Gbenou"><meta property="og:locale" content="en_GB"><meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:url" content="https://gbenoudylan.github.io/en/lab.html"><meta property="og:title" content="Lab | Dylan Gbenou"><meta property="og:description" content="Dylan Gbenou&#x27;s lab: an interactive IAM access review demo on fictional data, a network failure simulator and what he is learning next.">
+<meta property="og:image" content="https://gbenoudylan.github.io/assets/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Dylan Gbenou, network and cybersecurity engineer">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Lab | Dylan Gbenou"><meta name="twitter:description" content="Dylan Gbenou&#x27;s lab: an interactive IAM access review demo on fictional data, a network failure simulator and what he is learning next."><meta name="twitter:image" content="https://gbenoudylan.github.io/assets/og-image.jpg">
+<link rel="preload" href="../fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="../site.css"></head>
+<body><a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="index.html" aria-label="Dylan Gbenou, home"><img src="../assets/avatar.webp" width="38" height="38" alt=""><span class="brand__t"><span class="brand__n">Dylan Gbenou</span><span class="brand__r">Systems · Networks · Security</span></span></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav"><span class="menu-btn__bars" aria-hidden="true"></span><span class="menu-btn__t">Menu</span></button>
+  <nav class="nav" id="nav" aria-label="Main navigation"><a href="projects.html"><i>01</i>Projects</a><a href="lab.html" aria-current="page"><i>02</i>Lab</a><a href="journey.html"><i>03</i>Journey</a><a href="skills.html"><i>04</i>Skills</a><a href="off-screen.html"><i>05</i>Off screen</a><a class="nav__lang" href="../labo.html" hreflang="fr" lang="fr" title="Version française"><i>FR</i><span class="nav__lang-t">Français</span></a><a class="nav__cta" href="contact.html">Get in touch</a></nav>
+</div><span class="progress" aria-hidden="true"></span></header>
+<main id="main">
+<header class="sheet"><div class="wrap">
+  <div class="sheet__meta micro"><span><b>Sheet 02</b> · Lab</span><span>Interactive demos · fictional data</span></div>
+  <div class="sheet__grid"><h1>Understand by doing.</h1><p class="lead">A diagram explains. A demo makes you understand. Here you can run an access review, cut a network link, and see what I'm working on next.</p></div><nav class="jump" aria-label="Jump to an experiment"><a href="#review"><i>01</i>Access review</a><a href="#failure"><i>02</i>Network failure</a><a href="#learn"><i>03</i>Learning</a></nav>
+</div></header>
+<section class="section section--tight" id="review" aria-labelledby="t-rev" style="padding-top:0"><div class="wrap">
+  <div class="section__head"><span class="idx">§ 01</span><h2 id="t-rev">An access review, in two minutes.</h2><p>Inspired by the tool I designed at MTN Côte d'Ivoire (<a href="project-iam.html">P-01</a>). The logic is the same; the scoring and the accounts are simplified for the demo.</p></div>
+  <div class="demo" data-demo="iam">
+    <div class="demo__bar"><span class="micro">Demo · access review</span><span class="demo__flag">Fictional demo data</span></div>
+    <noscript><p class="noscript-note" style="margin:20px">This demo needs JavaScript. The <a href="project-iam.html#screenshots">screenshots of the real tool</a> show the same principle.</p></noscript>
+  </div>
+  <div class="sod-box rv"><div><p class="eyebrow">Key concept</p><h3>Segregation of duties</h3><p>Some rights are harmless on their own but dangerous together. If one account can create a supplier and approve its payment, a single person can pay an invoice they made up themselves. An access review looks for these combinations too.</p></div><div><svg viewBox="0 0 440 200" role="img" aria-labelledby="sodT"><title id="sodT">Segregation of duties: the same account must not be able to create a supplier and approve its payment</title>
+<g font-family="Figtree,sans-serif" font-size="12" font-weight="700">
+<rect x="10" y="20" width="150" height="54" rx="8" fill="#DCEEE4" stroke="#12261D" stroke-width="1.5"/><text x="85" y="44" text-anchor="middle" fill="#12261D">Create a supplier</text><text x="85" y="61" text-anchor="middle" fill="#5A6B61" font-weight="600" font-size="11">right A</text>
+<rect x="10" y="126" width="150" height="54" rx="8" fill="#DCEEE4" stroke="#12261D" stroke-width="1.5"/><text x="85" y="150" text-anchor="middle" fill="#12261D">Approve a payment</text><text x="85" y="167" text-anchor="middle" fill="#5A6B61" font-weight="600" font-size="11">right B</text>
+<rect x="290" y="73" width="140" height="54" rx="8" fill="#F7DEDA" stroke="#C8413B" stroke-width="2" stroke-dasharray="6 4"/><text x="360" y="97" text-anchor="middle" fill="#12261D">One account</text><text x="360" y="114" text-anchor="middle" fill="#C8413B" font-size="11">conflict A + B</text>
+<path d="M160 47 C 230 47, 230 92, 290 96" fill="none" stroke="#12261D" stroke-width="1.5"/><path d="M160 153 C 230 153, 230 108, 290 104" fill="none" stroke="#12261D" stroke-width="1.5"/>
+<circle cx="226" cy="100" r="13" fill="#C8413B"/><text x="226" y="104.5" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">!</text></g></svg></div></div>
+</div></section>
+
+<section class="section dark" id="failure" aria-labelledby="t-sim"><div class="wrap">
+  <div class="section__head"><span class="idx" style="color:var(--yellow)">§ 02</span><h2 id="t-sim">Cut a link without breaking anything.</h2><p>The network model (<a href="project-network.html" style="color:var(--yellow)">P-03</a>) links every access switch to two distribution switches. Cut links and watch the traffic find another path.</p></div>
+  <div class="sim" data-sim="net"><div class="sim__bar"><span class="micro">Simulator · dual-homing</span></div><noscript><p class="noscript-note" style="margin:20px;color:var(--on-dark)">The simulator needs JavaScript. The <a href="project-network.html#architecture" style="color:var(--yellow)">architecture diagram</a> shows the same redundancy.</p></noscript></div>
+</div></section>
+
+<section class="section" id="learn" aria-labelledby="t-learn"><div class="wrap"><div class="section__head"><span class="idx">§ 03</span><div><p class="eyebrow">Continuous learning</p><h2 id="t-learn">Always learning. Always experimenting.</h2></div><p>Three columns, from the least certain to the most solid. A technology only moves right once a real piece of work proves it.</p></div>
+<div class="lanes"><div class="lane lane--explore rv">
+  <div class="lane__head"><span class="lane__en">Explore</span><span class="micro">Next topics · 4</span></div>
+  <p class="lane__sub">The topics I want to work on next. No project yet: nothing here is presented as mastered.</p>
+  <ul class="lane__list"><li><div><b>Generative AI, LLMs and assistants</b><small>Understanding what a model does well, and where it goes wrong</small></div><div class="refs"><span class="ref ref--x">no project yet</span></div></li><li><div><b>AI agents</b><small>How a model chains tools together, and how it is kept under control</small></div><div class="refs"><span class="ref ref--x">no project yet</span></div></li><li><div><b>AI-augmented automation</b><small>Where AI could lighten an access review without removing the human decision</small></div><div class="refs"><span class="ref ref--x">no project yet</span></div></li><li><div><b>AI-assisted development</b><small>Writing faster without giving up on tests</small></div><div class="refs"><span class="ref ref--x">no project yet</span></div></li></ul>
+</div><div class="lane lane--experiment rv">
+  <div class="lane__head"><span class="lane__en">Experiment</span><span class="micro">Prototyped · 2</span></div>
+  <p class="lane__sub">Prototypes: they prove an idea, not a product.</p>
+  <ul class="lane__list"><li><div><b>Python and model integration</b><small>Proof of concept: shape recognition in a point cloud, with PyTorch, TensorFlow and Open3D</small></div><div class="refs"><a class="ref" href="project-reving.html" title="Reving: from 3D scan to CAD file">P-07</a></div></li><li><div><b>Multi-cloud interconnection</b><small>IPSec tunnel from AWS to Azure: created, never brought up, and documented as such</small></div><div class="refs"><a class="ref" href="project-terraform.html" title="Multi-cloud lab with Terraform">P-04</a></div></li></ul>
+</div><div class="lane lane--build rv">
+  <div class="lane__head"><span class="lane__en">Build</span><span class="micro">Built · 5</span></div>
+  <p class="lane__sub">Delivered work you can open and check.</p>
+  <ul class="lane__list"><li><div><b>Cybersecurity and IAM</b><small>Access reviews, anomaly detection, flaw prioritisation</small></div><div class="refs"><a class="ref" href="project-iam.html" title="Automating access reviews">P-01</a><a class="ref" href="project-vulnerabilities.html" title="Vulnerability prioritisation">P-02</a></div></li><li><div><b>Data analysis in Python</b><small>Reading eleven export formats, scoring from 0 to 100</small></div><div class="refs"><a class="ref" href="project-iam.html" title="Automating access reviews">P-01</a><a class="ref" href="project-vulnerabilities.html" title="Vulnerability prioritisation">P-02</a></div></li><li><div><b>Infrastructure as Code</b><small>An AWS network described entirely in Terraform</small></div><div class="refs"><a class="ref" href="project-terraform.html" title="Multi-cloud lab with Terraform">P-04</a></div></li><li><div><b>Cloud architecture</b><small>VPC, subnets, locked-down S3, VPN gateway</small></div><div class="refs"><a class="ref" href="project-terraform.html" title="Multi-cloud lab with Terraform">P-04</a></div></li><li><div><b>Web and iOS applications</b><small>React and Supabase, Swift and Keychain</small></div><div class="refs"><a class="ref" href="project-budgettracker-web.html" title="BudgetTracker Web">P-05</a><a class="ref" href="project-budgettracker-ios.html" title="BudgetTracker for iOS">P-06</a></div></li></ul>
+</div></div></div></section>
+<section class="closing dark grid-bg" aria-labelledby="closing-t"><div class="wrap closing__grid">
+  <div>
+    <p class="eyebrow">Next step</p>
+    <h2 id="closing-t">Good systems are built together. <em>Let's talk about the next one.</em></h2>
+    <p>I am looking for my first permanent role in the Paris region, in systems, networks, cloud, cybersecurity or IAM. Available from November 2026.</p>
+    <div class="mailbox"><code>gbenoudylan@gmail.com</code><button type="button" class="btn btn--sun btn--sm" data-copy="gbenoudylan@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg><span>Copy address</span></button></div>
+    <div class="closing__act"><a class="btn btn--line-light btn--sm" href="mailto:gbenoudylan@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Send an email</a><a class="btn btn--line-light btn--sm" href="https://www.linkedin.com/in/dylan-maxence-gbenou-709867218/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v5M8 8v.01M12 16v-5M12 13c0-1.5 1-2 2-2s2 .8 2 2.2V16"/></svg>LinkedIn</a><a class="btn btn--line-light btn--sm" href="../CV_Dylan_Gbenou_EN.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>CV (PDF)</a></div>
+  </div>
+  <div class="closing__card marks marks--light"><dl>
+    <div><dt class="micro">Contract</dt><dd>Permanent (CDI)</dd></div>
+    <div><dt class="micro">Location</dt><dd>Paris region, based in Cergy</dd></div>
+    <div><dt class="micro">Availability</dt><dd>From November 2026</dd></div>
+    <div><dt class="micro">Degree</dt><dd>EIGSI engineering degree, March 2027. Certificate of completion available now.</dd></div>
+  </dl></div>
+</div></section>
+</main>
+<footer class="site-footer"><div class="wrap foot">
+  <div class="foot__id"><img src="../assets/avatar.webp" width="44" height="44" alt="" loading="lazy"><div><b>Dylan Maxence Gbenou</b>Systems, network and cybersecurity engineer, Cergy.</div></div>
+  <nav aria-label="Footer"><a href="projects.html">Projects</a><a href="lab.html">Lab</a><a href="journey.html">Journey</a><a href="skills.html">Skills</a><a href="off-screen.html">Off screen</a><a href="contact.html">Contact</a><a href="../CV_Dylan_Gbenou_EN.pdf" target="_blank" rel="noopener">CV</a><a href="https://www.linkedin.com/in/dylan-maxence-gbenou-709867218/" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/gbenoudylan" target="_blank" rel="noopener">GitHub</a><a href="../labo.html" hreflang="fr" lang="fr">Français</a></nav>
+  <div class="foot__legal micro"><span>Designed and hand-coded · original diagrams and illustrations</span><span>Sheet updated · November 2026</span></div>
+</div></footer>
+<script src="../site.js" defer></script><script src="../lab.js" defer></script></body></html>
