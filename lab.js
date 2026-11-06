@@ -267,6 +267,135 @@
     update();
   }
 
+
+  /* =====================================================================
+     1 bis. LE DÉFI : le visiteur fait la revue lui-même, puis l'outil
+     ===================================================================== */
+  function initChallenge(root){
+    var ALL=['dorm','gone','sod','orph','adm'];
+    function toolView(a){
+      var hits=[], s=0, msgs=[];
+      RULES.forEach(function(r){ if(r.test(a)){ hits.push(r.k); s+=r.w; msgs.push(r.msg(a)); } });
+      s=Math.min(100,s); var lv=level(s), act=action(a,lv,hits);
+      var dec=act[1]==='a-rev'?'rev':act[1]==='a-chk'?'chk':'keep';
+      return {s:s,lv:lv,msgs:msgs,dec:dec,act:act[0]};
+    }
+    var DEC={keep:t('Conserver','Keep'),chk:t('Vérifier','Check'),rev:t('Révoquer','Revoke')};
+    var order=ACCOUNTS.slice();
+    var i=0, choices={}, t0=0, tEnd=0, tick=null;
+
+    root.innerHTML='';
+    var bar=el('div',{class:'demo__bar'},'<span class="micro">'+t('Le défi · vous êtes l’auditeur','The challenge · you are the auditor')+'</span><span class="demo__flag">'+t('Données fictives de démonstration','Fictional demo data')+'</span>');
+    var stage=el('div',{class:'ch'});
+    root.appendChild(bar); root.appendChild(stage);
+
+    function fmt(ms){ var s=Math.max(0,ms)/1000; if(s<60) return (Math.round(s*10)/10).toString().replace('.',EN?'.':',')+' s'; var m=Math.floor(s/60); return m+' min '+String(Math.round(s%60)).padStart(2,'0')+' s'; }
+
+    function intro(){
+      stage.innerHTML='<div class="ch__intro"><p class="ch__big">'+t('24 comptes. 3 décisions possibles. Chrono en marche.','24 accounts. 3 possible decisions. The clock is running.')+'</p>'
+        +'<p class="ch__txt">'+t('Pour chaque compte, lisez la fiche et décidez : <b>conserver</b> l’accès, le <b>vérifier</b> avec le manager, ou le <b>révoquer</b>. Puis lancez l’outil et comparez.','For each account, read the record and decide: <b>keep</b> the access, <b>check</b> it with the manager, or <b>revoke</b> it. Then run the tool and compare.')+'</p>'
+        +'<ul class="ch__hints"><li>'+t('Un compte inutilisé depuis longtemps est suspect.','An account unused for a long time is suspicious.')+'</li><li>'+t('Un collaborateur parti ne devrait plus rien avoir.','Someone who has left should have nothing left.')+'</li><li>'+t('Certains droits sont dangereux ensemble.','Some rights are dangerous together.')+'</li></ul>'
+        +'<button type="button" class="btn btn--sun ch__go">'+t('Commencer la revue','Start the review')+' <span aria-hidden="true">→</span></button>'
+        +'<p class="ch__kbd micro">'+t('Clavier : C conserver · V vérifier · R révoquer','Keyboard: K keep · C check · R revoke')+'</p></div>';
+      stage.querySelector('.ch__go').addEventListener('click',start);
+    }
+
+    function start(){
+      i=0; choices={}; t0=performance.now(); tEnd=0;
+      stage.innerHTML='<div class="ch__play">'
+        +'<div class="ch__head"><span class="ch__prog micro" aria-live="polite"></span><span class="ch__clock" aria-hidden="true">0,0 s</span></div>'
+        +'<div class="ch__card" tabindex="-1"></div>'
+        +'<div class="ch__btns"><button type="button" class="ch__b ch__b--keep" data-d="keep"><kbd>'+(EN?'K':'C')+'</kbd>'+DEC.keep+'</button><button type="button" class="ch__b ch__b--chk" data-d="chk"><kbd>'+(EN?'C':'V')+'</kbd>'+DEC.chk+'</button><button type="button" class="ch__b ch__b--rev" data-d="rev"><kbd>R</kbd>'+DEC.rev+'</button></div>'
+        +'<div class="ch__strip" aria-hidden="true"></div>'
+        +'<button type="button" class="ch__skip link">'+t('Abandonner et laisser l’outil faire','Give up and let the tool do it')+'</button></div>';
+      var strip=stage.querySelector('.ch__strip');
+      order.forEach(function(a){ strip.appendChild(el('span',{'data-id':a.id},'')); });
+      Array.prototype.forEach.call(stage.querySelectorAll('.ch__b'),function(b){ b.addEventListener('click',function(){ decide(b.getAttribute('data-d')); }); });
+      stage.querySelector('.ch__skip').addEventListener('click',function(){ finish(true); });
+      clearInterval(tick); tick=setInterval(function(){ var c=stage.querySelector('.ch__clock'); if(c) c.textContent=fmt(performance.now()-t0); },100);
+      doc.addEventListener('keydown',keys);
+      show();
+    }
+    function keys(e){
+      if(!stage.querySelector('.ch__play')) return;
+      if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+      var k=e.key.toLowerCase();
+      var map=EN?{k:'keep',c:'chk',r:'rev'}:{c:'keep',v:'chk',r:'rev'};
+      if(map[k]){ e.preventDefault(); decide(map[k]); }
+    }
+    function show(){
+      var a=order[i]; if(!a) return finish(false);
+      stage.querySelector('.ch__prog').textContent=t('Compte ','Account ')+(i+1)+' / '+order.length;
+      var card=stage.querySelector('.ch__card');
+      card.innerHTML='<div class="ch__id"><b>'+esc(a.login)+'</b><span>'+a.id+'</span></div>'
+        +'<dl><div><dt>'+t('Service','Department')+'</dt><dd>'+esc(t(a.dept))+'</dd></div><div><dt>Type</dt><dd>'+esc(t(a.type))+'</dd></div>'
+        +'<div><dt>'+t('Statut RH','HR status')+'</dt><dd>'+esc(t(a.hr))+'</dd></div><div><dt>'+t('Dernière connexion','Last sign-in')+'</dt><dd>'+(EN?a.days+' days ago':'il y a '+a.days+' j')+'</dd></div>'
+        +'<div class="w"><dt>'+t('Droits','Rights')+'</dt><dd>'+esc(a.rights.map(function(x){return t(x);}).join(' · '))+'</dd></div>'
+        +'<div class="w"><dt>'+t('Systèmes','Systems')+'</dt><dd>'+esc(a.sys.map(function(x){return t(x);}).join(', '))+'</dd></div></dl>';
+      card.classList.remove('in'); void card.offsetWidth; card.classList.add('in');
+    }
+    function decide(d){
+      var a=order[i]; if(!a) return;
+      choices[a.id]=d;
+      var s=stage.querySelector('.ch__strip [data-id="'+a.id+'"]'); if(s) s.className='d-'+d;
+      i++; if(i>=order.length) finish(false); else show();
+    }
+    function finish(gaveUp){
+      tEnd=performance.now(); clearInterval(tick); doc.removeEventListener('keydown',keys);
+      var userMs=tEnd-t0, done=Object.keys(choices).length;
+      stage.innerHTML='<div class="ch__scan"><p class="ch__big">'+t('L’outil reprend les 24 comptes…','The tool goes through the 24 accounts…')+'</p><div class="ch__strip ch__strip--scan"></div></div>';
+      var strip=stage.querySelector('.ch__strip'), cells=[];
+      order.forEach(function(a){ var sp=el('span',{},''); strip.appendChild(sp); cells.push(sp); });
+      var tv={}; order.forEach(function(a){ tv[a.id]=toolView(a); });
+      var k=0, step=reduce?0:40;
+      (function go(){
+        if(k<order.length){ cells[k].className='d-'+tv[order[k].id].dec; k++; return step?setTimeout(go,step):go(); }
+        setTimeout(function(){ results(userMs,done,gaveUp,tv); }, reduce?0:350);
+      })();
+    }
+    function results(userMs,done,gaveUp,tv){
+      var same=0, missed=[], over=0;
+      order.forEach(function(a){
+        var u=choices[a.id], r=tv[a.id];
+        if(!u) return;
+        if(u===r.dec) same++;
+        else if(u==='keep' && r.dec!=='keep') missed.push(a);
+        else if(r.dec==='keep' && u!=='keep') over++;
+      });
+      var risky=order.filter(function(a){ return tv[a.id].dec!=='keep'; }).length;
+      var notSeen=order.filter(function(a){ return !choices[a.id] && tv[a.id].dec!=='keep'; }).length;
+      var perAcc=done?userMs/done:0;
+      var hours=perAcc?Math.round(perAcc*6000/3600000):0;
+      var toolMs=24*40+180;
+      var verdict;
+      if(gaveUp && done===0) verdict=t('L’outil a tout fait. C’est exactement pour ça qu’il existe.','The tool did it all. That is exactly why it exists.');
+      else if(missed.length===0 && notSeen===0) verdict=t('Aucun compte à risque laissé actif. Bel œil d’auditeur.','No risky account left active. A sharp auditor’s eye.');
+      else verdict=t('Un compte à risque laissé actif, c’est une porte ouverte. L’outil n’en oublie aucun.','A risky account left active is an open door. The tool misses none.');
+      var miss='';
+      missed.slice(0,4).forEach(function(a){ miss+='<li><b>'+esc(a.login)+'</b><span>'+esc(tv[a.id].msgs.join(' · '))+'</span><em>'+t('Outil : ','Tool: ')+esc(tv[a.id].act)+'</em></li>'; });
+      if(missed.length>4) miss+='<li class="more">'+t('… et ','… and ')+(missed.length-4)+t(' autre(s)',' more')+'</li>';
+      stage.innerHTML='<div class="ch__res">'
+        +'<p class="ch__verdict">'+verdict+'</p>'
+        +'<div class="ch__vs"><div class="you"><span class="micro">'+t('Vous','You')+'</span><b>'+(done?fmt(userMs):'—')+'</b><small>'+done+' / 24 '+t('comptes traités','accounts handled')+'</small></div>'
+        +'<div class="vs" aria-hidden="true">vs</div>'
+        +'<div class="tool"><span class="micro">'+t('L’outil','The tool')+'</span><b>'+fmt(toolMs)+'</b><small>24 / 24 '+t('comptes · démo','accounts · demo')+'</small></div></div>'
+        +'<ul class="ch__stats"><li><b>'+same+'</b>'+t('décisions identiques à l’outil','decisions matching the tool')+'</li>'
+        +'<li class="'+(missed.length+notSeen?'bad':'')+'"><b>'+(missed.length+notSeen)+'</b>'+t('comptes à risque laissés actifs, sur ','risky accounts left active, out of ')+risky+'</li>'
+        +'<li><b>'+over+'</b>'+t('accès sains bloqués par excès de prudence','healthy accesses blocked out of caution')+'</li></ul>'
+        +(hours?'<p class="ch__extra">'+t('À votre rythme, les <b>6 000 comptes à risque</b> repérés en un mois chez MTN vous auraient pris environ <b>','At your pace, the <b>6,000 risky accounts</b> flagged in one month at MTN would have taken you about <b>')+hours+t(' heures</b>. L’outil les traite en quelques minutes.',' hours</b>. The tool handles them in minutes.')+'</p>':'')
+        +(miss?'<div class="ch__miss"><p class="micro">'+t('Ce que vous avez laissé passer','What you let through')+'</p><ul>'+miss+'</ul></div>':'')
+        +'<div class="ch__act"><button type="button" class="btn ch__again">'+t('Rejouer','Play again')+'</button><a class="btn btn--ghost" href="'+(EN?'project-iam.html':'projet-iam.html')+'">'+t('Voir comment l’outil est construit','See how the tool is built')+'</a></div>'
+        +'</div>';
+      stage.querySelector('.ch__again').addEventListener('click',function(){ order=shuffle(ACCOUNTS.slice()); start(); });
+      var v=stage.querySelector('.ch__verdict'); if(v){ v.setAttribute('tabindex','-1'); v.focus({preventScroll:true}); }
+      try{ root.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(e){ root.scrollIntoView(); }
+    }
+    function shuffle(a){ for(var j=a.length-1;j>0;j--){ var r=Math.floor(Math.random()*(j+1)); var x=a[j]; a[j]=a[r]; a[r]=x; } return a; }
+    order=shuffle(order);
+    intro();
+  }
+
   Array.prototype.forEach.call(doc.querySelectorAll('[data-demo="iam"]'),initIAM);
+  Array.prototype.forEach.call(doc.querySelectorAll('[data-demo="challenge"]'),initChallenge);
   Array.prototype.forEach.call(doc.querySelectorAll('[data-sim="net"]'),initSim);
 })();
