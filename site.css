@@ -1120,3 +1120,9 @@ a.ref:hover{background:var(--yellow)}
   .ch__b kbd{display:none}
 }
 @media (hover:none){ .ch__kbd,.ch__b kbd{display:none} }
+/* Défi dans le bloc projet phare */
+.dare{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin:4px 0 0;padding:20px 22px;border:1.5px dashed var(--yellow);border-radius:var(--r-m);background:rgba(244,196,48,.06)}
+.dare p{margin:0;color:var(--on-dark);max-width:38ch;font-size:.98rem;line-height:1.45}
+.dare p b{display:block;color:#fff;font-family:var(--display);font-size:1.3rem;letter-spacing:-.01em;margin-bottom:4px}
+.hero__cta .btn--sun{box-shadow:4px 4px 0 var(--night)}
+.hero__cta .btn--sun:hover{box-shadow:6px 6px 0 var(--night);transform:translate(-2px,-2px)}
